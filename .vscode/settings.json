@@ -1,0 +1,6 @@
+{
+    "files.associations": {
+        "conio.h": "c",
+        "string.h": "c"
+    }
+}
