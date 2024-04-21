@@ -2,6 +2,7 @@ import curses
 import curses.ascii
 import time
 import stringGen
+import math
 
 stdscr = curses.initscr()
 stcolor = curses.start_color()
@@ -15,7 +16,7 @@ curses.init_pair(2,curses.COLOR_WHITE,curses.COLOR_BLACK)
 
 stdscr.addstr("WPM: -\n")
 
-testString = stringGen.stringGenerator(10)
+testString = stringGen.stringGenerator(40)
 
 stdscr.addstr(testString)
 i = 0
@@ -34,26 +35,28 @@ while i < testString.__len__():
         startTime = time.time()
 
 
-    if ch == curses.ascii.SP:
+    if ch == curses.ascii.SP and ord(testString[i]) == curses.ascii.SP:
         correctLetters += 1
-        wpm = int(correctLetters / (time.time() - startTime) * 12)
+        y, x = stdscr.getyx()
+        wpm = int((correctLetters * 12) / math.ceil(time.time() - startTime))
         #stdscr.move(0,5)
         stdscr.addstr(0,5,str(wpm))
-        stdscr.addch(1,i,testString[i],curses.color_pair(1))
+        stdscr.move(y,x)
+        stdscr.addch(testString[i],curses.color_pair(1))
         words += 1
         i += 1
-        stdscr.refresh()
     elif ch == ord(testString[i]):
-        stdscr.addch(1,i,ch)
+        stdscr.addch(ch)
         correctLetters += 1
         i += 1
         stdscr.refresh()
     elif ch == curses.KEY_BACKSPACE:
-        stdscr.addch(1,i-1,testString[i-1])
+        y, x = stdscr.getyx()
+        stdscr.addch(y,x-1,testString[i-1])
         i -= 1
-        stdscr.move(1,i)
+        stdscr.move(y,x-1)
     else:
-        stdscr.addch(1,i,ch,curses.color_pair(1))
+        stdscr.addch(testString[i],curses.color_pair(1))
         wrongLetter += 1
         i += 1
 
