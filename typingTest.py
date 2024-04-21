@@ -30,10 +30,14 @@ while i < testString.__len__():
     
     ch = stdscr.getch()
 
+    if(i == 0):
+        startTime = time.time()
+
+
     if ch == curses.ascii.SP:
         correctLetters += 1
         wpm = int(correctLetters / (time.time() - startTime) * 12)
-        stdscr.move(0,5)
+        #stdscr.move(0,5)
         stdscr.addstr(0,5,str(wpm))
         stdscr.addch(1,i,testString[i],curses.color_pair(1))
         words += 1
@@ -42,8 +46,6 @@ while i < testString.__len__():
     elif ch == ord(testString[i]):
         stdscr.addch(1,i,ch)
         correctLetters += 1
-        if (i == 0):
-            startTime = time.time()
         i += 1
         stdscr.refresh()
     elif ch == curses.KEY_BACKSPACE:
